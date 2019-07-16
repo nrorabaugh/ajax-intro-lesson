@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-import * as Shop  from  '../models/ Shop';
+const shopApi = require('../models/shop');
 
-const router = express.Router();
 
 // helper function to ensure shopId
 function getShopId(req,res) {
@@ -25,12 +24,15 @@ function getShopId(req,res) {
 // Get All Shops Route
 router.get('/',  async (req, res) => {
     try {
-        const retrievedShops = Shop.getAllShops();
+        const retrievedShops = await shopApi.getAllShops();
+        console.log(retrievedShops);
         res.status(200).json(retrievedShops);
         return;
     } catch(e) {
         const message = `Failed to retrieve all shops.
             Please check mongod service and make sure it is running`;
+        console.log(message)
+        console.error(e);
          res.status(500).json({
              error: e,
              message,
@@ -46,7 +48,7 @@ router.get('/:shopId', async (req, res) => {
     // Lets try to get the shop using the Id passed in URL param
     try {
         // get shop by id and return the data
-        const retrievedShop = await Shop.getShopById(shopId);
+        const retrievedShop = await shopApi.getShopById(shopId);
         return res.status(200).json(retrievedShop);
     }  catch(e) {
         // if any error occurs lets return back error
@@ -67,7 +69,7 @@ router.get('/:shopId', async (req, res) => {
 router.post('/',  async (req, res) => {
     const shopData = req.body;
     try {
-        const shopCreated =  await Shop.createShop(shopData);
+        const shopCreated =  await shopApi.createShop(shopData);
         res.status(201).json(shopCreated);
         return;
     } catch(e) {
@@ -92,7 +94,7 @@ router.delete('/:shopId', async (req, res) => {
      // Lets try to get the shop using the Id passed in URL param
      try {
         // get shop by id and return the data
-        await Shop.getShopById(shopId);
+        await shopApi.deleteShopById(shopId);
         const message = `shop with shopId ${shopId}, has deleted successfully`;
         res.status(202).json(message);
         return;
@@ -103,7 +105,7 @@ router.delete('/:shopId', async (req, res) => {
             "${shopId}". Please make sureId exists`;
         console.log(message)
         console.error(e);
-        res.status(404).json({
+        res.status(500).json({
             error: e,
             message,
         });
@@ -116,22 +118,22 @@ router.put('/:shopId', async (req, res) => {
     // ensure shopId
     const shopId = getShopId(req, res);
     // get data to update shop
-    const shopUpdateDate = req.body;
+    const shopPayload = req.body;
 
      try {
-        await Shop.updateShopById(shopId, shopUpdateDate);
+        await shopApi.updateShopById(shopId, shopPayload);
         const message = `shop with shopId ${shopId}, has updated successfully`;
-        res.status(204).message(message);
+        res.status(204).json(message);
         return;
      } catch(e) {
         // if any error occurs lets return back error
         //     and error message for user
         const message = `failed to create shop using data from request body
-            ${JSON.stringify(shopData, null, 4)}
+            ${JSON.stringify(shopPayload, null, 4)}
             ,please check request body and try again`;
         console.log(message)
         console.error(e);
-        res.status(404).json({
+        res.status(500).json({
             error: e,
             message,
         });
@@ -139,53 +141,7 @@ router.put('/:shopId', async (req, res) => {
      }
 });
 
-router.get('/:shopId/like', async (req, res) => {
-    // ensure shopId
-    const shopId = getShopId(req, res);
 
-    try {
-        await Shop.setLikeState(shopId, true);
-        const message = `shop with shopId ${shopId}, has been liked successfully`;
-        res.status(204).message(message);
-        return;
-    } catch(e) {
-        // if any error occurs lets return back error
-        //     and error message for user
-        const message = `failed to change like status shop using shopId
-            "${shopId}". Please make sureId exists`;
-        console.log(message)
-        console.error(e);
-        res.status(404).json({
-            error: e,
-            message,
-        });
-        return;
-    }
-})
-
-router.get('/:shopId/unlike', async (req, res) => {
-    // ensure shopId
-    const shopId = getShopId(req, res);
-
-    try {
-        await Shop.setLikeState(shopId, false);
-        const message = `shop with shopId ${shopId}, has been un-liked successfully`;
-        res.status(204).message(message);
-        return;
-    } catch(e) {
-        // if any error occurs lets return back error
-        //     and error message for user
-        const message = `failed to change like status shop using shopId
-            "${shopId}". Please make sureId exists`;
-        console.log(message)
-        console.error(e);
-        res.status(404).json({
-            error: e,
-            message,
-        });
-        return;
-    }
-})
 
 module.exports = {
     shopRouter: router

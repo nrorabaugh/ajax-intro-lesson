@@ -8,9 +8,13 @@ export default class HelloWorld extends Component {
     }
 
     componentDidMount() {
-        axios.get('/api/helloworld')
+        axios.get('/api/ping')
             .then((res) => {
+                console.log(res.data)
                 this.setState({message: res.data})
+            })
+            .catch((error) => {
+                console.error(error)
             })
     }
 

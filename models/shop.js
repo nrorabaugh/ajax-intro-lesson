@@ -1,14 +1,16 @@
-const mongoose = require('mongoose');
-const Schema = mongoose. Schema;
+const mongoose = require('./connection.js');
+const Schema = mongoose.Schema;
 
 mongoose.Promise =  global.Promise;
 
 const sampleDescriptions = [
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut sem viverra aliquet eget.',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     'Nullam ac tortor vitae purus faucibus ornare. Viverra aliquet eget sit amet tellus.',
     'Mi eget mauris pharetra et ultrices neque ornare aenean.',
     'Blandit cursus risus at ultrices. In egestas erat imperdiet sed euismod nisi porta.',
-    'Pulvinar proin gravida hendrerit lectus a. Pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus. Enim facilisis gravida neque convallis a.'
+    'Pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus.',
+    'Pulvinar proin gravida hendrerit lectus a.',
+    ' Enim facilisis gravida neque convallis a.',
 ];
 
 function getRandomDescription () {
@@ -26,26 +28,16 @@ const ShopSchema = new Schema({
     },
     isLiked: {
         type: Boolean,
-        default: null,
+        default: false  ,
     },
 });
-
-// before save lets add a default description
-//  if one is not defined in model
-ShopSchema.pre('save', (next) => {
-    if (!this.description){
-        this.description = getRandomDescription();
-    }
-    next();
-});
-
 
 const ShopModel = mongoose.model('Shop', ShopSchema);
 /**
  *  getAllShops
  */
 function getAllShops() {
-    return ShopModel.find({});
+    return ShopModel.find();
 }
 
 /**
@@ -67,11 +59,21 @@ function deleteShopById(shopId) {
 }
 
 function updateShopById(shopId, shopData) {
+    // if (shopData._id) {
+    //     delete shopData._id;
+    // }
+    // if (shopData.__v) {
+    //     delete shopData._id;
+    // }
+
     return ShopModel
-        .findOneAndUpdate({_id: shopId, shopData});
+        .findOneAndUpdate({_id: shopId}, shopData);
 }
 
 function createShop(shopData) {
+    if (!shopData.description){
+        shopData.description = getRandomDescription();
+    }
     return ShopModel.create(shopData);
 }
 

@@ -1,0 +1,84 @@
+
+
+.shop-list-container {
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.shop-list-container .hero-image {
+    width: 100%;
+    height: 250px;
+    border-radius: 0 0 8px 8px;
+    position: relative;
+    object-fit: cover;
+}
+
+.shop-list-container > .header {
+    padding: 12px 8px;
+    font-size: 32px;
+    font-weight: 300;
+}
+
+.shop-list-container > input {
+    background: #f7f7f7;
+    border: 0;
+    color: rgba(0, 0, 0, 0.54);
+    height: 36px;
+    padding: 8px 30px;
+    -webkit-transition: color .2s;
+    transition: color .2s;
+    width: 100%;
+}
+.shop-list-container > button {
+    margin: 8px 0;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    padding: 5px 16px;
+    font-weight: 500;
+    justify-content: center;
+    text-decoration: none;
+    background-color: transparent;
+    border-radius: 4px;
+    text-transform: uppercase;
+    line-height: 1.75;
+    text-align: left;
+}
+
+.shop-list-item {
+    position: relative;
+    width: 100%;
+    padding: 12px 30px 12px 20px;
+    box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12);
+    margin: 12px 0;
+}
+
+.shop-list-item .title {
+    font-size: 28px;
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
+.shop-list-item .subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 38px;
+    color: #78909C;
+}
+
+.shop-list-item .material-icons.filled {
+    color: #F44336;
+    cursor: pointer;
+}
+
+.shop-list-item .material-icons.empty {
+    color: #78909C;
+    cursor: pointer;
+}
+
+.shop-list-item .material-icons.delete {
+    color: #78909C;
+    cursor: pointer;
+    position: absolute;
+    top: 12px;
+    right: 8px;
+}
