@@ -59,13 +59,6 @@ function deleteShopById(shopId) {
 }
 
 function updateShopById(shopId, shopData) {
-    // if (shopData._id) {
-    //     delete shopData._id;
-    // }
-    // if (shopData.__v) {
-    //     delete shopData._id;
-    // }
-
     return ShopModel
         .findOneAndUpdate({_id: shopId}, shopData);
 }

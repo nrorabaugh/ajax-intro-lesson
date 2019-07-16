@@ -15,50 +15,37 @@ export default class ShopListView extends Component {
     }
 
     componentDidMount() {
-        axios.get('/api/shop')
-        .then((res) => {
-
-            this.setState({shopList: res.data})
-        })
-        .catch((error) => {
-            console.error(error)
-        })
+        // get all shops and update state 'shopList' with results
+        //    route for get all shops is '/api/shop'
     }
+
+    //  Stretch goal is to update page after every change
 
     createNewShop = () => {
         const newShop = {
             name: this.state.newShopName,
         };
-        axios.post('/api/shop', newShop)
-            .then(() => {
-                // lets reset shop name
-                this.setState({newShopName: ''})
-
-                axios.get('/api/shop')
-                    .then((res) => {
-                        this.setState({shopList: res.data})
-                    })
-            })
+        // create new shop using 'newShopName' in state
+        //    route for creation is '/api/shop'
+        //    refresh page to see results
     }
 
     onFavoriteClick = (shopId) => {
-        const shopToUpdate = this.state.shopList.find((v) => {
-            return v._id === shopId
-        });
-        shopToUpdate.isLiked = true;
-        axios.put(`/api/shop/${shopId}`,shopToUpdate);
+        // update shop isLiked status using existing shop data and shopId
+        //    route for update is /api/shop/
+        //    refresh page to see results
     }
 
     onUnFavoriteClick = (shopId) => {
-        const shopToUpdate = this.state.shopList.find((v) => {
-            return v._id === shopId
-        });
-        shopToUpdate.isLiked = false;
-        axios.put(`/api/shop/${shopId}`,shopToUpdate);
+        // update shop isLiked status using existing shop data and shopId
+        //    route for update is /api/shop/
+        //    refresh page to see results
     }
 
     onShopDeleteClick = (shopId) => {
-        axios.delete(`/api/shop/${shopId}`)
+        // delete shop using existing shopId
+        //    route for delete is /api/shop/
+        //    refresh page to see results
     }
 
     onNewShopeNameChange = (event) => {
