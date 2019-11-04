@@ -1,4 +1,4 @@
-import './shop.css'
+ import './shop.css'
 import React, { Component } from 'react'
 import axios from 'axios'
 
@@ -15,37 +15,38 @@ export default class ShopListView extends Component {
     }
 
     componentDidMount() {
-        // get all shops and update state 'shopList' with results
-        //    route for get all shops is '/api/shop'
+       axios.get('/api/shop')
+        .then((response) => {
+            console.log(response.data)
+            this.setState({shopList: response.data})
+        })
     }
 
     //  Stretch goal is to update page after every change
 
-    createNewShop = () => {
+    createNewShop = async () => {
         const newShop = {
             name: this.state.newShopName,
         };
-        // create new shop using 'newShopName' in state
-        //    route for creation is '/api/shop'
-        //    refresh page to see results
+        axios.post('/api/shop', newShop)
+        await this.componentDidMount()
     }
 
-    onFavoriteClick = (shopId) => {
-        // update shop isLiked status using existing shop data and shopId
-        //    route for update is /api/shop/
-        //    refresh page to see results
+    onFavoriteClick = async (shopId) => {
+        const like = {isLiked: true}
+        axios.put(`/api/shop/${shopId}`, like)
+        await this.componentDidMount()
     }
 
-    onUnFavoriteClick = (shopId) => {
-        // update shop isLiked status using existing shop data and shopId
-        //    route for update is /api/shop/
-        //    refresh page to see results
+    onUnFavoriteClick = async (shopId) => {
+        const dislike = {isLiked: false}
+        axios.put(`/api/shop/${shopId}`, dislike)
+        await this.componentDidMount()
     }
 
-    onShopDeleteClick = (shopId) => {
-        // delete shop using existing shopId
-        //    route for delete is /api/shop/
-        //    refresh page to see results
+    onShopDeleteClick = async (shopId) => {
+        axios.delete(`/api/shop/${shopId}`)
+        await this.componentDidMount()
     }
 
     onNewShopeNameChange = (event) => {
